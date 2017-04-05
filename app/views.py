@@ -21,7 +21,7 @@ import time
 ###
 
 #engine = create_engine("mysql://:root@localhost/pmh_db", convert_unicode=True)
-db = MySQLdb.connect("localhost","root","password","pmh_db")
+db = MySQLdb.connect("localhost","root","password123","PMH_DB")
 cur = db.cursor()
 Login_id = ""
 
@@ -58,7 +58,7 @@ def doctor_add_test():
         test = request.form['test1']
         result = request.form['result1']
         
-        sqlquery2 = "INSERT INTO Patient_test VALUES (\""+docid+"\",\""+pat_id+"\",\""+test+"\", \""+result+"\" );"
+        sqlquery2 = "INSERT INTO Patient_Test VALUES (\""+docid+"\",\""+pat_id+"\",\""+test+"\", \""+result+"\" );"
         cur.execute(sqlquery2)
         db.commit()
         return redirect(url_for('doctor_view'))
@@ -154,7 +154,7 @@ def nurse_add():
 
 @app.route('/registration_details',methods=["GET", "POST"])
 def registration_details():
-    db = MySQLdb.connect("localhost","root","password","pmh_db")
+    db = MySQLdb.connect("localhost","root","password123","PMH_DB")
     """Remember to specify login required for only Secretaries."""
     if request.method == 'POST':
         cur = db.cursor()
@@ -339,7 +339,7 @@ def num_of_diag_Procedure():
         cur.execute("Call Num_of_diag_Procedure();")
         result =  cur.fetchall()
     """Render the website's intern."""
-    return render_template('Procedures.html', result2=result)
+    return render_template('procedures.html', result2=result)
 
 @app.route("/hereditary_diseases_Procedure", methods=["GET", "POST"])
 def hereditary_diseases_Procedure():
@@ -349,7 +349,7 @@ def hereditary_diseases_Procedure():
         result =  cur.fetchall()
 
     """Render the website's intern."""
-    return render_template('Procedures.html', result3=result)
+    return render_template('procedures.html', result3=result)
 
 
 @app.route("/popular_Medication_Procedure", methods=["GET", "POST"])
@@ -359,7 +359,7 @@ def popular_Medication_Procedure():
         result =  cur.fetchall()
 
     """Render the website's intern."""
-    return render_template('Procedures.html', result4=result)
+    return render_template('procedures.html', result4=result)
 
 
 @app.route("/area_diagnosis_Procedure", methods=["GET", "POST"])
@@ -370,7 +370,7 @@ def area_diagnosis_Procedure():
         result =  cur.fetchall()
 
     """Render the website's intern."""
-    return render_template('Procedures.html', result5=result) 
+    return render_template('procedures.html', result5=result) 
 
 
 @app.route("/getDocPatients", methods=["GET", "POST"])
@@ -381,7 +381,7 @@ def getDocPatients():
         result =  cur.fetchall()
 
     """Render the website's intern."""
-    return render_template('Procedures.html', result1=result) 
+    return render_template('procedures.html', result1=result) 
 
 
 
