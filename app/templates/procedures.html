@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="get_info"><b>Procedures<b></h1>
+<hr>
+<p class="text1">Procedures</p>
+<br>
+<form action="{{url_for('medical_Data_Procedure')}}" method="post"> 
+<div> 
+		<label for="medical_Data_Procedure"><h3>Medical Data Procedure</h3></label>
+		<br>
+		<p class="text1">Please enter a patient id</p>
+		<br>
+		<div>
+		<label for="pat_id">Paitent id</label>
+		<br>
+		<input type="text" id="pat_id" name="pat_id" size="35" required/>   
+		</div>
+		 <br>  
+		<button type="submit" class="submit1">View</button>
+</form>
+
+<br><br>
+	Medical Data Procedure Result: {{ result1 }}
+<br><br>
+
+
+<br>  <br>  
+<form action="{{url_for('num_of_diag_Procedure')}}" method="post"> 
+<div> 
+		<label for="medical_Data_Procedure"><h3>Number of Diagnosis Procedure</h3></label>
+		<br>
+		<br>  
+		<button type="submit" class="submit1">View</button>
+</form>
+
+<br><br>
+	Number of Diagnosis Procedure Result: {{ result2 }}
+<br><br>
+
+
+<br>
+<form action="{{url_for('hereditary_diseases_Procedure')}}" method="post"> 
+<div> 
+		<label for="hereditary_diseases_Procedure"><h3>Hereditary diseases Procedure</h3></label>
+		<br>
+		<p class="text1">Please enter a patient id</p>
+		<br>
+		<div>
+		<label for="age">Paitent Age</label>
+		<br>
+		<input type="text" id="age" name="age" size="35" required/>   
+		</div>
+		 <br>  
+		<button type="submit" class="submit1">View</button>
+</form>
+
+<br><br>
+	Hereditary diseases Procedure Result: {{ result3 }}
+<br><br>
+
+
+<br>
+<form action="{{url_for('popular_Medication_Procedure')}}" method="post"> 
+<div> 
+		<label for="popular_Medication_Procedure"><h3>Popular Medication Procedure</h3></label>
+		<br>
+		 <br>  
+		<button type="submit" class="submit1">View</button>
+</form>
+
+<br><br>
+	Popular Medication Procedure Result: {{ result4 }}
+<br><br>
+
+<br>
+<form action="{{url_for('area_diagnosis_Procedure')}}" method="post"> 
+<div> 
+		<label for="srea_diagnosis_Procedure"><h3>Area diagnosis Procedure</h3></label>
+		<br>
+		<br>
+		<p class="text1">Please enter a City</p>
+		<br>
+		<div>
+		<label for="pat_id">City</label>
+		<br>
+		<input type="text" id="city" name="city" size="35" required/>   
+		</div>
+		 <br>  
+		<button type="submit" class="submit1">View</button>
+</form>
+
+<br><br>
+	Area diagnosis Procedure: {{ result5 }}
+<br><br>
+
+
+{% endblock %}

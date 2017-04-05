@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="RegDetails-header"><b>Registration Details<b></h1>
+<hr>
+<p class="text1">Please enter the patients information.</p>
+<br>
+<form action="{{url_for('registration_details')}}" method="post"> 
+<div>  
+	<label for="fname">First Name</label><span>[Required]</span>
+		<br>
+		<p class="text1">Please paitents first name</p>
+		<input type="text" id="firstname" name="first_name" size="35" required/>   
+	</div>
+	<br>
+	<div> 
+		<label for="lname">Last Name</label><span>[Required]</span>
+		<br>
+		<p class="text1">Please enter pateints last name</p>
+		<input type="text" id="lastname" name="last_name" size="35" required/>   
+	</div>
+	<br>
+	<div> 
+		<label for="dob">Date of Birth</label><span>[Required]</span>
+		<br>
+		<p class="text1">Please enter patients date of birth</p>
+		<input type="date" id="dob" name="dob" required/>   
+	</div>
+	<br>
+ 	<div>
+		<label for="address">Address</label><span>[Required]</span>
+		<br>
+		<p class="text1">Please enter patients Adrress in the approriate fields below</p>
+		<label for="street">Street</label><span>[Required]</span><br>
+		<input type="text" id="street" name="street" size="35" required/> 
+		<br><br>
+		<label for="town">Town</label><span>[Required]</span><br>
+		<input type="text" id="town" name="town" size="35" required/> 
+		<br><br>
+		<label for="parish">Parish</label><span>[Required]</span><br>
+		<input type="text" id="parish" name="parish" size="35" required/> 
+	</div>
+	<br>
+	<div> 
+		<label for="age">Phone Number</label><span>[Required]</span>
+		<br>
+		<p class="text1">Please enter patients phone number</p>
+		<input type="number" id="phone_num" name="phone_num" required/>   
+	</div>
+ 	<br>
+<button type="submit" class="submit1">Register</button>
+<button type="reset" class="submit1">Clear</button>  
+</form>
+{% endblock %}
