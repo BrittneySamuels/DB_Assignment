@@ -29,7 +29,13 @@
 </form>
 
 <br><br>
-	Diagnosis Result: {{ result1 }}
+	Diagnosis Result: <ul>
+				{% for element in result1 %}
+				    <li>First Name: {{ element[0] }}<br> 
+				     Last Name: {{ element[1] }}
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 <br>  <br>  
@@ -52,7 +58,12 @@
 </form>
 
 <br><br>
-	Allergies Result: {{ result2 }}
+	Allergies Result:<ul>
+				{% for element in result2 %}
+				    <li>{{ element[0] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 
@@ -66,11 +77,16 @@
 </form>
 
 <br><br>
-	Medication Result: {{ result3 }}
+	Medication Result: <ul>
+				{% for element in result3 %}
+				    <li>{{ element[0] }}{{ element[1] }}{{ element[2] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 
-<br>  <br>  <br>
+<br>  <br> 
 <form action="{{url_for('results')}}" method="post"> 
 <div> 
 		<label for="results"><h3>Results</h3></label>
@@ -91,7 +107,12 @@
 
 
 <br><br>
-	Results : {{ result4 }}
+	Results : {% for element in result4 %}
+				    <li>{{ element[0] }}{{ element[1] }} {{ element[2] }}{{ element[3] }}{{ element[4] }}{{ element[5] }}{{ element[6] }}{{ element[7] }}{{ element[8] }}{{ element[9] }}
+				    	<br>{{ element[10] }}
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 <br>  <br>  <br>
@@ -121,7 +142,13 @@
 </form>
 
 <br><br>
-	Nurse Result : {{ result5 }}
+	Nurse Result : <ul>
+				{% for element in result5 %}
+				    <li>First Name: {{ element[0] }}<br> 
+				     Last Name: {{ element[1] }}
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 
@@ -135,6 +162,12 @@
 </form>
 
 <br><br>
-	Intern Result : {{ result6 }}
+	Intern Result :  <ul>
+				{% for element in result6 %}
+				    <li>First Name: {{ element[0] }}<br> 
+				     Last Name: {{ element[1] }}
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 {% endblock %}

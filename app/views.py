@@ -5,15 +5,25 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 
-from app import app, db 
-from flask import render_template, request, redirect, url_for, flash
+from app import app, login_manager
+from flask import render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from forms import LoginForm
-from sqlalchemy import create_engine
+import uuid
+#from sqlalchemy import create_engine
+import MySQLdb
+import time
+
+#engine = create_engine("mysql://root:password@localhost/pmh_db", convert_unicode=True)
 
 ###
 # Routing for your application.
 ###
+
+#engine = create_engine("mysql://:root@localhost/pmh_db", convert_unicode=True)
+db = MySQLdb.connect("localhost","root","password","pmh_db")
+cur = db.cursor()
+Login_id = ""
 
 @app.route('/')
 def home():
@@ -29,52 +39,125 @@ def about():
 ################################################## Doctors and nurses Insert medical data ###############################
 
 @app.route('/doctor_view')
-#@login_required
 def doctor_view():
     return render_template('doc_view.html');
 
+@app.route('/doctor_add')
+def doctor_add():
+    return render_template('doctor_add.html');
 
 @app.route('/add_med_data', methods =["GET", "POST"])
-#@login_required
-def doctor_add():
+def doctor_add_test():
     """Render a secure page on our website that only logged in users can access."""
+    #if current_user.is_authenticated:
+        
     if request.method == 'POST':
-       #  db.create_all()
-       #  #userid = str(uuid.uuid4().fields[-1])[:8]
-       #  #fil = file.filename
-       #  if pic:
-       #      file_folder = app.config['UPLOAD_FOLDER']
-       #      filename = secure_filename(pic.filename)
-       #      pic.save(os.path.join(file_folder, filename))
-       #  profiles = UserProfile(userid, request.form['username'],tim , request.form['fname'],request.form['lname'], filename, request.form['age'], request.form['gender'], request.form['bio'])
-       # # profiles.set_id(userid)
-       #  db.session.add(profiles)
-       #  db.session.commit()
-        flash('New person was added ')
+        cur = db.cursor()
+        docid= "D00000"
+        pat_id = request.form['pat_id1']
+        test = request.form['test1']
+        result = request.form['result1']
+        
+        sqlquery2 = "INSERT INTO Patient_test VALUES (\""+docid+"\",\""+pat_id+"\",\""+test+"\", \""+result+"\" );"
+        cur.execute(sqlquery2)
+        db.commit()
         return redirect(url_for('doctor_view'))
-    return render_template('doctor_add.html')
+
+@app.route('/add_med_data2', methods =["GET", "POST"])         
+def doctor_add_proc():
+    """Render a secure page on our website that only logged in users can access."""
+    #if current_user.is_authenticated:
+     #   docid= current_user.get_id()
+    if request.method == 'POST':
+        cur = db.cursor()
+        docid= "D00000"
+        pat_id = request.form['pat_id3']
+        proc_id = request.form['proc1']
+        
+        sqlquery2 = "INSERT INTO Patient_Procedure VALUES (\""+docid+"\",\""+pat_id+"\",\""+proc_id+"\" );"
+        cur.execute(sqlquery2)
+        db.commit()
+        return redirect(url_for('doctor_view'))
+
+@app.route('/add_med_data3', methods =["GET", "POST"])
+def doctor_add_diag():
+    """Render a secure page on our website that only logged in users can access."""
+    #if current_user.is_authenticated:
+    #    docid= current_user.get_id()
+    if request.method == 'POST':
+        cur = db.cursor()
+        docid= "D00000"
+        pat_id = request.form['pat_id2']
+        diag_id = request.form['diag1']
+        diag_date = time.strftime("%Y%m%d")
+
+        sqlquery2 = "INSERT INTO Patient_Diagnosis VALUES (\""+docid+"\",\""+pat_id+"\",\""+diag_id+"\",\""+diag_date+"\" );"
+        cur.execute(sqlquery2)
+        db.commit()
+        return redirect(url_for('doctor_view'))
+
+@app.route('/add_med_data4', methods =["GET", "POST"])
+def doctor_add_med():
+    """Render a secure page on our website that only logged in users can access."""
+   # if current_user.is_authenticated:
+    #    docid= current_user.get_id()
+    if request.method == 'POST':
+        cur = db.cursor()
+        docid= "D00000"
+        pat_id = request.form['pat_id4']
+        med_id = request.form['med1']
+        
+        sqlquery2 = "INSERT INTO Patient_Medicine VALUES (\""+docid+"\",\""+pat_id+"\",\""+med_id+"\" );"
+        cur.execute(sqlquery2)
+        db.commit()
+        return redirect(url_for('doctor_view'))
+
 
 @app.route('/daily_updates')
-#@login_required
 def nurse_view():
     """Render a secure page on our website that only logged in users can access."""
     return render_template('nurse_view.html')
 
-@app.route('/daily_updates_form')
-#@login_required
-def nurse_form():
+@app.route('/update_form3', methods =["GET", "POST"])
+def nurse_form2():
+    print "hey"
     """Render a secure page on our website that only logged in users can access."""
-    return render_template('daily_updates_form.html')
+    #if current_user.is_authenticated:
+    #    nurid= current_user.get_id()
+    if request.method == 'POST':
+        print "heyYYYYYYY"
+        cur = db.cursor()
+        nurid= "N00000"
+        pat_id = request.form.get('patid')
+        bodytemp = request.form.get('temp')
+        resp = request.form.get('resp')
+        pulse = request.form.get('pulse')
+        bloodp = request.form.get('bloodp')
+        med_id = request.form.get('med')
+        med_dosage = request.form.get('meddosage')
+        now = time.strftime("%Y%m%d")
+        print cur ,nurid, bodytemp, resp, pulse, bloodp, med_id, med_dosage, now
+        sqlquery2 = "INSERT INTO Daily_Updates VALUES (\""+nurid+"\",\""+pat_id+"\",\""+now+"\"," +bodytemp+ ","+resp+","+pulse+",\""+bloodp+"\",\""+med_id+"\",\""+med_dosage+"\" );"
+        print sqlquery2
+        cur.execute(sqlquery2)
+        db.commit()
+        return redirect(url_for('nurse_view'))
+    
+@app.route('/nurse_add')
+def nurse_add():
+    return render_template('daily_updates_form.html');
+
 
 ############################################### End Doctors and nurses Insart medical data ###############################
 
 ################################################## REGISTRATION DETAILS ################################################
 
-@app.route('/registration-details')
-#@login_required
+@app.route('/registration_details',methods=["GET", "POST"])
 def registration_details():
+    db = MySQLdb.connect("localhost","root","password","pmh_db")
     """Remember to specify login required for only Secretaries."""
     if request.method == 'POST':
+        cur = db.cursor()
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         dob = request.form['dob']
@@ -83,23 +166,24 @@ def registration_details():
         parish = request.form['parish']
         phone_num = request.form['phone_num']
 
-
-        sqlquery = "SELECT pat_id from Patient \
-                    where pat_id= MAX(pat_id)"
-        result = engine.execute(sqlquery, [1]).all()
-
-
-        patient_id = result+1
+        
+        patient_id = "P0000" + str(uuid.uuid4().fields[-1])[:4]
+        
        
         flash('Patient Registerd')
 
-        patient = Patient(id=patient_id, dob=dob, first_name=first_name, last_name=last_name)
-        address = Patient_Address(address_line_1=town, address_line_2=parish, address_line_3=street)
-        num = Patient_Contact(pat_number=phone_num)
-        db.session.add(num)
-        db.session.add(patient)
-        db.session.add(address)
-        db.session.commit()
+        sqlquery2 = "INSERT INTO Patient VALUES (\""+patient_id+"\",\""+first_name+"\",\""+last_name+"\",\""+dob+"\");"
+        cur.execute(sqlquery2)
+        db.commit()
+
+        sqlquery3 = "INSERT INTO Patient_Address VALUES (\""+patient_id+"\",\""+street+"\",\""+town+"\",\""+parish+"\");"
+        cur.execute(sqlquery3)
+        db.commit()
+
+        sqlquery4 = "INSERT INTO Patient_Contact VALUES (\""+patient_id+"\","+phone_num+ ");"
+        cur.execute(sqlquery4)
+        db.commit()
+
         return redirect(url_for('home'))
     """Render the website's registration_details page."""
     return render_template('registration_details.html')
@@ -113,79 +197,90 @@ def get_info():
 
 @app.route("/diagnosis", methods=["GET", "POST"])
 def diagnosis():
+    cur = db.cursor()
     if request.method == 'POST':
         diagnosis = request.form['diagnosis']
         date_start = request.form['date_start']
         date_end = request.form['date_end']
-        sqlquery = "SELECT first_name, last_name from Patient JOIN Patient_Diagnosis JOIN Diagnosis \
-                    ON Patient.pat_id = Patient_Diagnosis.pat_id AND Patient_Diagnosis.diag_id = Diagnosis.diag_id\
-                    where diag_date between"+date_start+" AND "+date_end+" AND diag_name= "+diagnosis
-        result = engine.execute(sqlquery, [1]).all()
+        sqlquery = "SELECT first_name, last_name from Patient JOIN Patient_Diagnosis JOIN Diagnosis ON Patient.pat_id = Patient_Diagnosis.pat_id AND Patient_Diagnosis.diag_id = Diagnosis.diag_id where diag_date between \""+date_start+"\" AND \""+date_end+"\" AND diag_name= \""+diagnosis+"\";"
+        print sqlquery
+        cur.execute(sqlquery)
+        result =  cur.fetchall()
+        
 
     """Render the website's diagnosis."""
-    return render_template('get_info.html', result1=result)
+    return render_template('get_info.html', result1 = result)
 
 @app.route("/allergies", methods=["GET", "POST"])
 def allergies():
+    cur = db.cursor()
     if request.method == 'POST':
         pat_id = request.form['pat_id']
-        sqlquery = "SELECT med_name from Patient JOIN Allergies JOIN Medication \
-                    ON Patient.pat_id = Allergies.pat_id AND Allergies.med_id = Medication.med_id\
-                    where pat_id= "+pat_id 
-        result = engine.execute(sqlquery, [1]).all()
+        sqlquery = "SELECT med_name from Patient JOIN Allergies JOIN Medicine ON Patient.pat_id = Allergies.pat_id AND Allergies.med_id = Medicine.med_id where Patient.pat_id= \""+pat_id + "\";"
+        print sqlquery
+        cur.execute(sqlquery)
+        result =  cur.fetchall()
 
     """Render the website's diagnosis."""
     return render_template('get_info.html', result2=result)
 
+
 @app.route("/medication", methods=["GET", "POST"])
 def medication():
+    cur = db.cursor()
     if request.method == 'POST':
-        ssqlquery = "SELECT MAX(IDs) from Patient JOIN Allergies JOIN Medication \
-                    ON Patient.pat_id = Allergies.pat_id AND Allergies.med_id = Medication.med_id\
-                    where Group BY Allergies.med_id AS IDs"
-        result = engine.execute(sqlquery, [1]).all()
+        sqlquery = "SELECT med_name from Allergies JOIN Medicine ON Allergies.med_id = Medicine.med_id Group BY Allergies.med_id HAVING COUNT(pat_id) = (SELECT MAX(x) AS Y FROM (SELECT COUNT(pat_id) AS x FROM Allergies GROUP BY med_id) AS Z);"
+        cur.execute(sqlquery)
+        result =  cur.fetchall()
 
 
     """Render the website's diagnosis."""
     return render_template('get_info.html', result3=result)   
 
+
 @app.route("/results", methods=["GET", "POST"])
 def results():
+    cur = db.cursor()
     if request.method == 'POST':
         pat_id = request.form['pat_id']
-        sqlquery = "SELECT test_result from Patient JOIN Patient_Test JOIN Test \
-                    ON Patient.pat_id = Patient_Test.pat_id AND Patient_Test.test_id = Test.test_id\
-                    where "+"Scan"+" IN test_result AND pat_id= "+pat_id
-        result = engine.execute(sqlquery, [1]).all()
+        sqlquery = "SELECT test_result FROM Patient_Test WHERE test_result LIKE '%Scan%' AND pat_id= \""+pat_id + "\";"
+        cur.execute(sqlquery)
+        result =  cur.fetchall()
+
+    # SELECT med_name FROM 
+    # Patient JOIN Allergies JOIN Medicine ON
+    # Patient.pat_id = Allergies.pat_id AND Allergies.med_id = Medicine.med_id
+    # GROUP BY Allergies.med_id HAVING COUNT(pat_id) as count1= 
+    # (SELECT MAX(pat_id_count) as max_id FROM 
+    # (SELECT med_id, count(pat_id) as pat_id_count FROM Allergies GROUP BY (med_id)));
 
     """Render the website's diagnosis."""
     return render_template('get_info.html', result4=result)
 
 @app.route("/nurse_getInfo", methods=["GET", "POST"])
 def nurse_getInfo():
+    cur = db.cursor()
     if request.method == 'POST':
         pat_id = request.form['pat_id']
         spec_date = request.form['spec_date']
-        sqlquery = "SELECT first_name, last_name from Nurse JOIN Daily_Updates JOIN Patient \
-                    ON Patient.pat_id = Daily_Updatest.pat_id AND Daily_Updates.nur_id = Nurse.nur_id\
-                    where pat_id = "+pat_id+" AND update_date = "+spec_date
-        result = engine.execute(sqlquery, [1]).all()
+        sqlquery = "SELECT Nurse.first_name, Nurse.last_name from Nurse JOIN Daily_Updates ON Daily_Updates.nur_id = Nurse.nur_id where pat_id = \""+pat_id + "\" AND update_date = \""+spec_date + "\";"
+        cur.execute(sqlquery)
+        result =  cur.fetchall()
 
     """Render the website's diagnosis."""
     return render_template('get_info.html', result5=result)
 
-
 @app.route("/intern", methods=["GET", "POST"])
 def intern():
     if request.method == 'POST':
-        sqlquery = "SELECT first_name, last_name from Intern JOIN Patient_Procedure JOIN Patient \
-                    ON Patient.pat_id = Patient_Procedure.pat_id AND Patient_Procedure.doc_id = Intern.doc_id\
-                    where pat_id = "+pat_id+" AND update_date = "+spec_date+ "Group BY Patient.pat_id AS IDs \
-                    HAVING Max(IDs)"
-        result = engine.execute(sqlquery, [1]).all()
+        cur = db.cursor()
+        sqlquery = "SELECT Intern.first_name, Intern.last_name from Intern JOIN Patient_Procedure ON Patient_Procedure.doc_id = Intern.doc_id Group By Patient_Procedure.doc_id Having COUNT(pat_id) = (SELECT MAX(x) AS Y FROM (SELECT Intern.doc_id, COUNT(pat_id) AS x FROM Patient_Procedure JOIN Intern ON Patient_Procedure.doc_id = Intern.doc_id GROUP BY Intern.doc_id ) AS Z);"
+        cur.execute(sqlquery)
+        result =  cur.fetchall()
 
     """Render the website's diagnosis."""
     return render_template('get_info.html', result6=result)
+
 
 ################################################## END OF GET INFO ######################################################
 
@@ -193,100 +288,113 @@ def intern():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    cur = db.cursor()
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():
         # change this to actually validate the entire form submission
         # and not just one field
         if form.username.data:
             # Get the username and password values from the form.
-            id = form.username.data
+            id_ = form.username.data
             password = form.password.data
             # using your model, query database for a user based on the username
             # and password submitted
             # store the result of that query to a `user` variable so it can be
-            if form.option == 'Doctor':
-                user = Doctor.query.filter_by(doc_id=id, password=password).first()
+            if request.form['option'] == 'Doctor':
+                sqlquery = "SELECT doc_id FROM Doctor where doc_id = \""+id_ +"\";"
+                cur.execute(sqlquery)
                 return redirect(url_for('doctor_view'))
-            elif form.option == 'Nurse':
-                user = Nurse.query.filter_by(nur_id=id, password=password).first()
+            elif request.form['option'] == 'Nurse':
+                sqlquery = "SELECT nur_id FROM Nurse where nur_id = \""+ id_ +"\";" 
+                cur.execute(sqlquery)              
                 return redirect(url_for('nurse_view'))
-            elif form.option == 'Secretary':
-                user = Secretary.query.filter_by(sec_id=id, password=password).first()
-                return redirect(url_for('registration-details'))
+            elif request.form['option'] == 'Secretary':
+                sqlquery = "SELECT sec_id FROM Secretary where sec_id = \""+ id_ +"\";" 
+                cur.execute(sqlquery)
+                return redirect(url_for('registration_details'))
             else:
                 return redirect(url_for('home'))
             # passed to the login_user() method.
 
             # get user id, load into session
-            login_user(user)
+            login_user(sqlquery)
 
             # remember to flash a message to the user
             flash('Logged in successfully.', 'success')
 
     return render_template("login.html", form=form)
 
+
+
 ################################################## Procedures ###########################################################
 
 @app.route("/procedures", methods=["GET", "POST"])
-#@login_required
 def procedures():
-    return render_template('procedures.html')
-
-@app.route("/medical_Data_Procedure", methods=["GET", "POST"])
-def medical_Data_Procedure():
-    if request.method == 'POST':
-        #pat_id = request.form['pat_id']
-        result =  db.execute('Medical_Data_Procedure', fields=['pat_id'])
-
-    """Render the website's intern."""
-    return render_template('Procedures.html', result1=result) 
-
+        return render_template('procedures.html')
+   
 
 @app.route("/num_of_diag_Procedure", methods=["GET", "POST"])
 def num_of_diag_Procedure():
     if request.method == 'POST':
-        result =  db.execute('Num_of_diag_Procedure')
-
+        cur.execute("Call Num_of_diag_Procedure();")
+        result =  cur.fetchall()
     """Render the website's intern."""
-    return render_template('Procedures.html', result2=result) 
+    return render_template('Procedures.html', result2=result)
 
 @app.route("/hereditary_diseases_Procedure", methods=["GET", "POST"])
 def hereditary_diseases_Procedure():
     if request.method == 'POST':
-        #pat_id = request.form['pat_id']
-        result =  db.execute('Hereditary_diseases_Procedure', fields=['age'])
+        diag_id = request.form['diag_id']
+        cur.execute("Call Hereditary_diseases_Procedure (\""+diag_id+"\");")
+        result =  cur.fetchall()
 
     """Render the website's intern."""
-    return render_template('Procedures.html', result3=result) 
+    return render_template('Procedures.html', result3=result)
+
 
 @app.route("/popular_Medication_Procedure", methods=["GET", "POST"])
 def popular_Medication_Procedure():
     if request.method == 'POST':
-        result =  db.execute('Popular_Medication_Procedure')
+        cur.execute("Call Popular_Medication();")
+        result =  cur.fetchall()
 
     """Render the website's intern."""
-    return render_template('Procedures.html', result4=result) 
+    return render_template('Procedures.html', result4=result)
 
 
 @app.route("/area_diagnosis_Procedure", methods=["GET", "POST"])
 def area_diagnosis_Procedure():
     if request.method == 'POST':
-        #city = request.form['city']
-        result =  db.execute('Area_diagnosis_Procedure', fields=['city'])
+        city = request.form['city']
+        cur.execute("Call Area_Diagnosis_Procedure (\""+city+"\");")
+        result =  cur.fetchall()
 
     """Render the website's intern."""
     return render_template('Procedures.html', result5=result) 
 
 
+@app.route("/getDocPatients", methods=["GET", "POST"])
+def getDocPatients():
+    if request.method == 'POST':
+        doc_id = request.form['doc_id']
+        cur.execute("Call GetDocPatients (\""+doc_id+"\");")
+        result =  cur.fetchall()
+
+    """Render the website's intern."""
+    return render_template('Procedures.html', result1=result) 
+
+
+
+
+
 ################################################## END of Procedures ####################################################
 
 @app.route("/logout")
-#@login_required
 def logout():
-    # Logout the user and end the session
-    logout_user()
-    flash('You have been logged out.', 'danger')
-    return redirect(url_for('home'))
+        # Logout the user and end the session
+        logout_user()
+        flash('You have been logged out.', 'danger')
+        return redirect(url_for('home'))
 
 
 ###

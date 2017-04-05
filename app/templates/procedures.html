@@ -3,81 +3,77 @@
 {% block main %}
 <h1 class="get_info"><b>Procedures<b></h1>
 <hr>
-<p class="text1">Procedures</p>
-<br>
-<form action="{{url_for('medical_Data_Procedure')}}" method="post"> 
-<div> 
-		<label for="medical_Data_Procedure"><h3>Medical Data Procedure</h3></label>
-		<br>
-		<p class="text1">Please enter a patient id</p>
-		<br>
-		<div>
-		<label for="pat_id">Paitent id</label>
-		<br>
-		<input type="text" id="pat_id" name="pat_id" size="35" required/>   
-		</div>
-		 <br>  
-		<button type="submit" class="submit1">View</button>
-</form>
-
-<br><br>
-	Medical Data Procedure Result: {{ result1 }}
-<br><br>
-
-
 <br>  <br>  
 <form action="{{url_for('num_of_diag_Procedure')}}" method="post"> 
 <div> 
-		<label for="medical_Data_Procedure"><h3>Number of Diagnosis Procedure</h3></label>
+		<label for="medical_Data_Procedure"><h3>Number of Diagnosis</h3></label>
 		<br>
+		<p>Count of all diagnosed Patients</p>
 		<br>  
 		<button type="submit" class="submit1">View</button>
 </form>
 
 <br><br>
-	Number of Diagnosis Procedure Result: {{ result2 }}
+	Number of Diagnosis Procedure Result: <ul>
+				{% for element in result2 %}
+				    <li>{{ element[0] }}   {{ element[1] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
-
 
 <br>
 <form action="{{url_for('hereditary_diseases_Procedure')}}" method="post"> 
 <div> 
-		<label for="hereditary_diseases_Procedure"><h3>Hereditary diseases Procedure</h3></label>
+		<label for="hereditary_diseases_Procedure"><h3>Hereditary diseases</h3></label>
 		<br>
-		<p class="text1">Please enter a patient id</p>
+		<p>Patients with the same disease as their relative</p>
+		<br>
+		<p class="text1">Please enter a Diagnosis id</p>
 		<br>
 		<div>
-		<label for="age">Paitent Age</label>
+		<label for="age">Diagnosis id </label>
 		<br>
-		<input type="text" id="age" name="age" size="35" required/>   
+		<input type="text" id="diag_id" name="diag_id" size="35" required/>   
 		</div>
 		 <br>  
 		<button type="submit" class="submit1">View</button>
 </form>
 
 <br><br>
-	Hereditary diseases Procedure Result: {{ result3 }}
+	Hereditary diseases Procedure Result: <ul>
+				{% for element in result3 %}
+				    <li>{{ element[0] }}   {{ element[1] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 
 <br>
 <form action="{{url_for('popular_Medication_Procedure')}}" method="post"> 
 <div> 
-		<label for="popular_Medication_Procedure"><h3>Popular Medication Procedure</h3></label>
+		<label for="popular_Medication_Procedure"><h3>Popular Medication</h3></label>
 		<br>
 		 <br>  
 		<button type="submit" class="submit1">View</button>
 </form>
 
 <br><br>
-	Popular Medication Procedure Result: {{ result4 }}
+	Popular Medication Procedure Result: <ul>
+				{% for element in result4 %}
+				    <li>{{ element[0] }}   {{ element[1] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
 <br>
 <form action="{{url_for('area_diagnosis_Procedure')}}" method="post"> 
 <div> 
-		<label for="srea_diagnosis_Procedure"><h3>Area diagnosis Procedure</h3></label>
+		<label for="srea_diagnosis_Procedure"><h3>Area diagnosis</h3></label>
 		<br>
+		<p>Count of diagnosis per Area</p>
 		<br>
 		<p class="text1">Please enter a City</p>
 		<br>
@@ -91,8 +87,39 @@
 </form>
 
 <br><br>
-	Area diagnosis Procedure: {{ result5 }}
+	Area diagnosis Procedure: <ul>
+				{% for element in result5 %}
+				    <li>{{ element[0] }}   {{ element[1] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
 <br><br>
 
+
+<!-- <p class="text1">Procedures</p>
+<br> -->
+<form action="{{url_for('getDocPatients')}}" method="post"> 
+<div> 
+		<label for="medical_Data_Procedure"><h3>Get Doc Patients</h3></label>
+		<br>
+		<p class="text1">Please enter a doctor id</p>
+		<br>
+		<div>
+		<label for="pat_id">Doctor id</label>
+		<br>
+		<input type="text" id="doc_id" name="doc_id" size="35" required/>   
+		</div>
+		 <br>  
+		<button type="submit" class="submit1">View</button>
+</form>
+
+<br><br>
+	Doc Patients Procedure Result: <ul>
+				{% for element in result1 %}
+				    <li>{{ element[0] }}   {{ element[1] }}<br> 
+				    </li>
+				{% endfor %}
+				</ul>
+<br><br>
 
 {% endblock %}

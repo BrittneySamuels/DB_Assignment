@@ -6,9 +6,12 @@ Flask-WTF
 Flask-SQLAlchemy
 Flask-Migrate
 Flask-Login
+flask-mysqldb
 
 
 # ----------------------
 # Production Server
 # ----------------------
 gunicorn
+
+

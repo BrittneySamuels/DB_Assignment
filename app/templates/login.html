@@ -6,7 +6,7 @@
     <form action="{{ url_for('login') }}" method="post">
       {{ form.csrf_token }}
       <div>
-        <input type="radio" name="option" value="doctor" checked> Doctor<br>
+        <input type="radio" name="option" value="Doctor" checked> Doctor<br>
         <input type="radio" name="option" value="Nurse"> Nurse<br>
         <input type="radio" name="option" value="Secretary"> Secretary
       </div>
